@@ -1,0 +1,30 @@
+{
+  "expo": {
+    "name": "icms",
+    "slug": "icms",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    // "icon": "./src/assets/app-icon.png",
+    "icon": "./src/assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./src/assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1589C9"
+    },
+    "ios": {
+      "supportsTablet": false
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": false
+    },
+    "web": {
+      "favicon": "./src/assets/favicon.png"
+    }
+  }
+}
