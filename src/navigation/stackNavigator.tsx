@@ -14,6 +14,8 @@ import VerifyScreen from "../screens/Verify/verify";
 import AddEquipmentScreen from "../screens/Equipment/AddEquipement";
 import AddChecklist from "../screens/Checklist/AddChecklist";
 import AddCertificate from "../screens/Certificate managment/AddCertificate";
+// import AddFIRScreen from "../tab/AddFirScreen";
+import FIR from "../tab/firScreen";
 import AddFIRScreen from "../tab/AddFirScreen";
 
 const Stack = createNativeStackNavigator();
@@ -40,6 +42,7 @@ export default function RootNavigator() {
         <Stack.Screen name="AddEquipment" component={AddEquipmentScreen} />
         <Stack.Screen name="Verify" component={VerifyScreen} />
         <Stack.Screen name="AddFIR" component={AddFIRScreen} />
+        <Stack.Screen name="FIR" component={FIR} />
 
       </Stack.Navigator>
     </NavigationContainer>

@@ -52,7 +52,7 @@ const CertificatesScreen = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#FFF" }}>
-      <AppHeader title="Check list" subtitle="Hello, Admin" showBack showNotification />
+      <AppHeader title="Certificates" subtitle="Hello, Admin" showBack showNotification />
       
       <View style={styles.container}>
         <View style={styles.headerBar}>

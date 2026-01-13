@@ -22,7 +22,7 @@ const VerifyScreen = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#FFF' }}>
       <AppHeader
-        title="Check list"
+        title="Verify"
         subtitle="Hello, Admin"
         showBack 
         showNotification={true}

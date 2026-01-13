@@ -3,6 +3,7 @@ import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, Touchable
 import { Text, TextInput, Button } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 const AddFIRScreen = ({ navigation }: any) => {
   const [form, setForm] = useState({
@@ -10,17 +11,37 @@ const AddFIRScreen = ({ navigation }: any) => {
     description: "",
     equipment: "Craveler Axivators",
     status: "Draft",
-    date: "13/01/2026", // Default to current date
-    time: "10:30 AM",
+    date: new Date(), // Changed to Date object
+    time: new Date(), // Changed to Date object
     inspectedBy: "",
     contractor: "",
     equipNo: "",
     location: ""
   });
 
+  const [showPicker, setShowPicker] = useState<"none" | "date" | "time">("none");
+
+  // Helper to format Date object to string
+  const formatDate = (date: Date) => {
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+  };
+
+  // Helper to format Time object to string
+  const formatTime = (date: Date) => {
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
   const handleSave = () => {
     if (!form.firName) return;
-    navigation.navigate("FIR", { newFIR: form });
+    
+    // Convert dates to strings for the FIR List screen
+    const finalForm = {
+      ...form,
+      date: formatDate(form.date),
+      time: formatTime(form.time)
+    };
+    
+    navigation.navigate("FIR", { newFIR: finalForm });
   };
 
   return (
@@ -31,14 +52,13 @@ const AddFIRScreen = ({ navigation }: any) => {
       <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
         
         <Text style={styles.formTitle}>New Field Inspection</Text>
-        <Text style={styles.formSubtitle}>Complete the report details below</Text>
 
         {/* Section 1: General Information */}
         <FormSection title="General Information" icon="information-outline">
           <CustomInput 
             label="FIR Name *" 
             value={form.firName} 
-            onChangeText={(t) => setForm({...form, firName: t})} 
+            onChangeText={(t: string) => setForm({...form, firName: t})} 
             placeholder="Report Title" 
           />
           
@@ -72,36 +92,66 @@ const AddFIRScreen = ({ navigation }: any) => {
         {/* Section 2: Inspection Details */}
         <FormSection title="Inspection Details" icon="calendar-clock">
           <View style={styles.row}>
-            <View style={{flex: 1, marginRight: 10}}>
-              <CustomInput 
-                label="Date of Inspection" 
-                value={form.date} 
-                onChangeText={(t) => setForm({...form, date: t})}
-                placeholder="dd/mm/yyyy"
-                rightIcon="calendar"
-              />
+            <View style={{ flex: 1, marginRight: 8 }}>
+               <Text style={styles.label}>Date of inspection</Text>
+               <TouchableOpacity 
+                 style={styles.dateButton} 
+                 onPress={() => setShowPicker("date")}
+               >
+                 <Text style={styles.dateButtonText}>{formatDate(form.date)}</Text>
+                 <MaterialCommunityIcons name="calendar" size={20} color="#0A9D8E" />
+               </TouchableOpacity>
             </View>
-            <View style={{flex: 1}}>
-              <CustomInput 
-                label="Time" 
-                value={form.time} 
-                onChangeText={(t) => setForm({...form, time: t})}
-                placeholder="--:-- --"
-                rightIcon="clock-outline"
-              />
+
+            <View style={{ flex: 1 }}>
+               <Text style={styles.label}>Time</Text>
+               <TouchableOpacity 
+                 style={styles.dateButton} 
+                 onPress={() => setShowPicker("time")}
+               >
+                 <Text style={styles.dateButtonText}>{formatTime(form.time)}</Text>
+                 <MaterialCommunityIcons name="clock-outline" size={20} color="#0A9D8E" />
+               </TouchableOpacity>
             </View>
           </View>
+
+          {/* Actual DateTimePicker Component */}
+          {showPicker === "date" && (
+            <DateTimePicker
+              value={form.date}
+              mode="date"
+              display="default"
+              onChange={(event, selectedDate) => {
+                setShowPicker("none");
+                if (selectedDate) setForm({ ...form, date: selectedDate });
+              }}
+            />
+          )}
+
+          {showPicker === "time" && (
+            <DateTimePicker
+              value={form.time}
+              mode="time"
+              is24Hour={false}
+              display="default"
+              onChange={(event, selectedTime) => {
+                setShowPicker("none");
+                if (selectedTime) setForm({ ...form, time: selectedTime });
+              }}
+            />
+          )}
+
           <CustomInput 
             label="Inspected By" 
             value={form.inspectedBy} 
-            onChangeText={(t) => setForm({...form, inspectedBy: t})} 
+            onChangeText={(t: string) => setForm({...form, inspectedBy: t})} 
           />
         </FormSection>
 
         {/* Section 3: Equipment Details */}
         <FormSection title="Equipment Details" icon="toolbox-outline">
-          <CustomInput label="Equipment No" value={form.equipNo} onChangeText={(t) => setForm({...form, equipNo: t})} />
-          <CustomInput label="Location" value={form.location} onChangeText={(t) => setForm({...form, location: t})} />
+          <CustomInput label="Equipment No" value={form.equipNo} onChangeText={(t: string) => setForm({...form, equipNo: t})} />
+          <CustomInput label="Location" value={form.location} onChangeText={(t: string) => setForm({...form, location: t})} />
         </FormSection>
 
         <View style={styles.buttonRow}>
@@ -142,8 +192,7 @@ const CustomInput = ({ label, rightIcon, ...props }: any) => (
 const styles = StyleSheet.create({
   mainContainer: { flex: 1, backgroundColor: '#FFF' },
   scrollContainer: { padding: 20 },
-  formTitle: { fontSize: 24, fontWeight: '800', color: '#1A1C1E' },
-  formSubtitle: { fontSize: 14, color: '#666', marginBottom: 25 },
+  formTitle: { fontSize: 24, fontWeight: '800', color: '#1A1C1E', marginTop: 14, marginBottom: 10 },
   section: { marginBottom: 30 },
   sectionHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 15 },
   sectionTitle: { fontSize: 16, fontWeight: '700', color: '#1A1C1E', marginLeft: 10 },
@@ -153,12 +202,27 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#CCC',
     borderRadius: 12,
-    overflow: 'hidden', // Ensures the picker stays inside the rounded corners
+    overflow: 'hidden',
     justifyContent: 'center',
   },
   picker: {
     height: 50,
     width: '100%',
+  },
+  dateButton: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#FFF',
+    borderWidth: 1,
+    borderColor: '#CCC',
+    borderRadius: 12,
+    height: 50,
+    paddingHorizontal: 15,
+  },
+  dateButtonText: {
+    fontSize: 14,
+    color: '#333',
   },
   inputContainer: { marginBottom: 10 },
   bgWhite: { backgroundColor: '#FFF' },
