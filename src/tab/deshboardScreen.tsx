@@ -1,306 +1,257 @@
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  ScrollView,
-  Image,
-  TouchableOpacity,
-} from "react-native";
-import { Text } from "react-native-paper";
+import { View, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView } from "react-native";
+import { Text, Surface } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import AppHeader from "../component/header";
 
-const metricData = [
-  {
-    icon: "clipboard-check",
-    label: "Total Inspections",
-    value: "1,240",
-    color: "#1089c6",
-  },
-  {
-    icon: "certificate",
-    label: "Certificates Issued",
-    value: "850",
-    color: "#7c3aed",
-  },
-  {
-    icon: "account-group",
-    label: "Inspectors",
-    value: "12",
-    color: "#f97316",
-  },
-  {
-    icon: "tools",
-    label: "Equipment",
-    value: "340",
-    color: "#14b8a6",
-  },
+const metrics = [
+  { icon: "clipboard-check-outline", label: "Inspections", value: "1,240", color: "#0A9D8E" },
+  { icon: "certificate-outline", label: "Certificates", value: "850", color: "#6366F1" },
+  { icon: "account-group-outline", label: "Inspectors", value: "12", color: "#F59E0B" },
+  { icon: "crane", label: "Equipment", value: "340", color: "#EC4899" },
 ];
 
 const quickActions = [
-  { icon: "account-plus", label: "Add User"
-    , primary: false
-   },
-  { icon: "plus-circle", label: "Equipment" },
-  { icon: "file-document", label: "Template" },
-  { icon: "chart-bar", label: "Reports" },
-  { icon: "shield-check", label: "Verify" },
+  { icon: "crane", label: "Equipment", screen: "Equipment" },
+  { icon: "file-certificate-outline", label: "Certificates", screen: "Certificates" },
+  { icon: "format-list-checks", label: "Checklist", screen: "Checklist" },
+  { icon: "shield-search", label: "Verify", screen: "Verify" },
+  { icon: "qrcode-scan", label: "FIR Scan", screen: "FIR" }
 ];
 
 const activities = [
-  {
-    icon: "clock-outline",
-    title: "Inspection #1024",
-    subtitle: "Submitted by A. Smith • 2m ago",
-    status: "Pending",
-    color: "#f59e0b",
-  },
-  {
-    icon: "check-circle",
-    title: "Certificate #884",
-    subtitle: "Verified by B. Jones • 1h ago",
-    status: "Approved",
-    color: "#22c55e",
-  },
-  {
-    icon: "close-circle",
-    title: "Inspection #992",
-    subtitle: "Reviewed by Admin • 5h ago",
-    status: "Rejected",
-    color: "#ef4444",
-  },
+  { icon: "clock-fast", title: "Inspection #1024", subtitle: "A. Smith • 2m ago", status: "Pending", color: "#F59E0B" },
+  { icon: "check-decagram", title: "Certificate #884", subtitle: "B. Jones • 1h ago", status: "Approved", color: "#0A9D8E" },
+  { icon: "alert-circle-outline", title: "Inspection #992", subtitle: "Admin • 5h ago", status: "Rejected", color: "#EF4444" },
 ];
 
 const DashboardScreen: React.FC = () => {
-  return (
-    <View style={styles.container}>
-      {/* ================= HEADER ================= */}
-        <AppHeader
-    title="Dashboard"
-    subtitle="Hello, Admin"
-    onNotificationPress={() => alert("Notifications")}
-  />
+  const navigation = useNavigation<any>();
 
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {/* ================= METRICS ================= */}
+  return (
+    <SafeAreaView style={styles.container}>
+      <AppHeader
+        title="Check list"
+        subtitle="Hello, Admin"
+        showNotification={true}
+        onNotificationPress={() => {}}
+      />
+
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 30 }}>
+        
+        {/* ===== WELCOME SECTION ===== */}
+        {/* <View style={styles.welcomeSection}>
+           <Text style={styles.headerTitle}>System Overview</Text>
+           <Text style={styles.headerSubtitle}>Real-time monitoring & management</Text>
+        </View> */}
+
+        {/* ===== METRICS GRID ===== */}
         <View style={styles.grid}>
-          {metricData.map((item) => (
-            <View key={item.label} style={styles.metricCard}>
-              <View
-                style={[
-                  styles.metricIcon,
-                  { backgroundColor: `${item.color}20` },
-                ]}
-              >
-                <MaterialCommunityIcons
-                  name={item.icon as any}
-                  size={22}
-                  color={item.color}
-                />
+          {metrics.map(item => (
+            <Surface key={item.label} style={styles.metricCard} elevation={1}>
+              <View style={[styles.metricIconBox, { backgroundColor: `${item.color}15` }]}>
+                <MaterialCommunityIcons name={item.icon as any} size={24} color={item.color} />
               </View>
-              <Text style={styles.metricValue}>{item.value}</Text>
-              <Text style={styles.metricLabel}>{item.label}</Text>
-            </View>
+              <View>
+                <Text style={styles.metricValue}>{item.value}</Text>
+                <Text style={styles.metricLabel}>{item.label}</Text>
+              </View>
+            </Surface>
           ))}
         </View>
 
-        {/* ================= QUICK ACTIONS ================= */}
-        <Text style={styles.sectionTitle}>Quick Actions</Text>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.quickActions}
+        {/* ===== QUICK ACTIONS (Horizontal) ===== */}
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>Quick Actions</Text>
+        </View>
+        <ScrollView 
+          horizontal 
+          showsHorizontalScrollIndicator={false} 
+          contentContainerStyle={styles.quickActionsContainer}
         >
-          {quickActions.map((item) => (
-            <TouchableOpacity key={item.label} style={styles.action}>
-              <View
-                style={[
-                  styles.actionCircle,
-                  item.primary && styles.primaryAction,
-                ]}
-              >
-                <MaterialCommunityIcons
-                  name={item.icon as any}
-                  size={24}
-                  color={item.primary ? "#fff" : "#1089c6"}
-                />
-              </View>
-              <Text style={styles.actionText}>{item.label}</Text>
+          {quickActions.map((action, index) => (
+            <TouchableOpacity
+              key={index}
+              style={styles.actionItem}
+              onPress={() => navigation.navigate(action.screen)}
+            >
+              <Surface style={styles.actionSurface} elevation={2}>
+                <MaterialCommunityIcons name={action.icon as any} size={26} color="#0A9D8E" />
+              </Surface>
+              <Text style={styles.actionLabel}>{action.label}</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
 
-        {/* ================= RECENT ACTIVITY ================= */}
-        <View style={styles.activityHeader}>
+        {/* ===== RECENT ACTIVITY ===== */}
+        <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Recent Activity</Text>
-          <Text style={styles.viewAll}>View All</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Certificates")}>
+            <Text style={styles.viewAllText}>View All</Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.activityList}>
-          {activities.map((item, index) => (
-            <View key={index} style={styles.activityCard}>
-              <View
-                style={[
-                  styles.activityIcon,
-                  { backgroundColor: `${item.color}20` },
-                ]}
-              >
-                <MaterialCommunityIcons
-                  name={item.icon as any}
-                  size={20}
-                  color={item.color}
-                />
+          {activities.map((item, i) => (
+            <TouchableOpacity key={i} style={styles.activityCard}>
+              <View style={[styles.activityIconCircle, { backgroundColor: `${item.color}15` }]}>
+                <MaterialCommunityIcons name={item.icon as any} size={20} color={item.color} />
               </View>
 
               <View style={{ flex: 1 }}>
                 <Text style={styles.activityTitle}>{item.title}</Text>
-                <Text style={styles.activitySubtitle}>
-                  {item.subtitle}
-                </Text>
+                <Text style={styles.activitySubtitle}>{item.subtitle}</Text>
               </View>
 
-              <Text
-                style={[
-                  styles.activityStatus,
-                  { color: item.color },
-                ]}
-              >
-                {item.status}
-              </Text>
-            </View>
+              <View style={[styles.statusBadge, { backgroundColor: `${item.color}15` }]}>
+                 <Text style={[styles.statusText, { color: item.color }]}>{item.status}</Text>
+              </View>
+            </TouchableOpacity>
           ))}
         </View>
+
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default DashboardScreen;
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f6f7f8",
+    backgroundColor: "#FFFFFF",
+  },
+  welcomeSection: {
+    paddingHorizontal: 20,
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: "800",
+    color: "#1A1C1E",
+  },
+  headerSubtitle: {
+    fontSize: 14,
+    color: "#666",
+    marginTop: 2,
   },
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    padding: 16,
+    padding: 20,
   },
-
   metricCard: {
     width: "48%",
-    backgroundColor: "#fff",
-    borderRadius: 14,
-    padding: 14,
-    marginBottom: 12,
+    backgroundColor: "#FFF",
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#F0F0F0',
   },
-
-  metricIcon: {
-    width: 36,
-    height: 36,
-    borderRadius: 8,
+  metricIconBox: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 12,
+  },
+  metricValue: {
+    fontSize: 18,
+    fontWeight: "800",
+    color: '#1A1C1E',
+  },
+  metricLabel: {
+    fontSize: 12,
+    color: "#666",
+    fontWeight: '500',
+  },
+  sectionHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    marginTop: 10,
+    marginBottom: 15,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: "800",
+    color: "#1A1C1E",
+  },
+  viewAllText: {
+    color: "#0A9D8E",
+    fontWeight: "700",
+    fontSize: 14,
+  },
+  quickActionsContainer: {
+    paddingLeft: 20,
+    paddingBottom: 20,
+  },
+  actionItem: {
+    alignItems: "center",
+    marginRight: 20,
+  },
+  actionSurface: {
+    width: 60,
+    height: 60,
+    borderRadius: 15,
+    backgroundColor: "#FFF",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 8,
   },
-
-  metricValue: {
-    fontSize: 20,
-    fontWeight: "700",
-  },
-
-  metricLabel: {
-    fontSize: 13,
-    color: "#617c89",
-  },
-
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: "700",
-    marginHorizontal: 16,
-    marginTop: 12,
-  },
-
-  quickActions: {
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-  },
-
-  action: {
-    alignItems: "center",
-    marginRight: 18,
-  },
-
-  actionCircle: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 6,
-  },
-
-  primaryAction: {
-    backgroundColor: "#1089c6",
-  },
-
-  actionText: {
+  actionLabel: {
     fontSize: 12,
-  },
-
-  activityHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginHorizontal: 16,
-    marginTop: 16,
-  },
-
-  viewAll: {
-    color: "#1089c6",
     fontWeight: "600",
-    fontSize: 13,
+    color: "#444",
   },
-
   activityList: {
-    paddingHorizontal: 16,
-    paddingBottom: 24,
+    paddingHorizontal: 20,
   },
-
   activityCard: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#fff",
-    borderRadius: 12,
+    backgroundColor: "#FFF",
+    borderRadius: 16,
     padding: 12,
-    marginBottom: 10,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#F5F5F5',
   },
-
-  activityIcon: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+  activityIconCircle: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
-    marginRight: 10,
+    marginRight: 12,
   },
-
   activityTitle: {
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: "700",
+    color: '#1A1C1E',
   },
-
   activitySubtitle: {
     fontSize: 12,
-    color: "#617c89",
+    color: "#888",
+    marginTop: 2,
   },
-
-  activityStatus: {
+  statusBadge: {
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 8,
+  },
+  statusText: {
     fontSize: 11,
-    fontWeight: "700",
+    fontWeight: "800",
+    textTransform: 'uppercase',
   },
 });

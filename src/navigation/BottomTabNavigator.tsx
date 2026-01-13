@@ -6,6 +6,7 @@ import DashboardScreen from "../tab/deshboardScreen";
 import FirScreen from "../tab/firScreen";
 import EquipmentScreen from "../tab/equipmentScreen";
 import ChecklistScreen from "../tab/checkList";
+import UserProfileScreen from "../screens/UserManagment/UserManagement";
 
 const Tab = createBottomTabNavigator();
 
@@ -14,23 +15,20 @@ export default function BottomTabNavigator() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarActiveTintColor: "#1589C9",
+        tabBarActiveTintColor: "#0A9D8E", // Updated Active Color
         tabBarInactiveTintColor: "#8E8E93",
         tabBarIcon: ({ color, size }) => {
           let iconName: keyof typeof Ionicons.glyphMap;
 
           switch (route.name) {
             case "Dashboard":
-              iconName = "home-outline";
+              iconName = "grid-outline"; // Updated Icon
               break;
             case "FIR":
               iconName = "document-text-outline";
               break;
-            case "Equipment":
-              iconName = "construct-outline";
-              break;
-            case "Checklist":
-              iconName = "checkmark-done-outline";
+            case "Profile":
+              iconName = "person-outline"; // Updated Icon
               break;
             default:
               iconName = "ellipse-outline";
@@ -42,8 +40,7 @@ export default function BottomTabNavigator() {
     >
       <Tab.Screen name="Dashboard" component={DashboardScreen} />
       <Tab.Screen name="FIR" component={FirScreen} />
-      <Tab.Screen name="Equipment" component={EquipmentScreen} />
-      <Tab.Screen name="Checklist" component={ChecklistScreen} />
+      <Tab.Screen name="Profile" component={UserProfileScreen} />
     </Tab.Navigator>
   );
 }

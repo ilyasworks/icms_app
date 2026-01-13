@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
+  SafeAreaView,
 } from "react-native";
 import { Text, TextInput, Button } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -18,141 +19,196 @@ const LoginScreen: React.FC = () => {
   const [secure, setSecure] = useState(true);
 
   const handleLogin = () => {
-    // later you can add API validation here
+    // Navigate to the main application
     navigation.replace("Main-tab"); 
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
-      style={styles.container}
-    >
-      {/* Icon */}
-      <View style={styles.iconWrapper}>
-        <MaterialCommunityIcons
-          name="shield-check"
-          size={42}
-          color="#1089c6"
-        />
-      </View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#FFF" }}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        style={styles.container}
+      >
+        <View style={styles.inner}>
+          
+          {/* Amazing Icon Design */}
+          <View style={styles.logoContainer}>
+            <View style={styles.iconCircle}>
+              <MaterialCommunityIcons
+                name="shield-check"
+                size={48}
+                color="#0A9D8E"
+              />
+            </View>
+            <View style={styles.dotDecoration} />
+          </View>
 
-      {/* Title */}
-      <Text style={styles.title}>Sign in to ICMS</Text>
-      <Text style={styles.subtitle}>
-        Manage inspections and certificates.
-      </Text>
+          {/* Title Section */}
+          <View style={styles.textSection}>
+            <Text style={styles.title}>Welcome to ICMS</Text>
+            <Text style={styles.subtitle}>
+              Safety & Inspection Management System
+            </Text>
+          </View>
 
-      {/* Card */}
-      <View style={styles.card}>
-        <TextInput
-          label="Email Address"
-          value={email}
-          mode="outlined"
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-          style={styles.input}
-        />
-
-        <TextInput
-          label="Password"
-          value={password}
-          mode="outlined"
-          secureTextEntry={secure}
-          onChangeText={setPassword}
-          style={styles.input}
-          right={
-            <TextInput.Icon
-              icon={secure ? "eye-off" : "eye"}
-              onPress={() => setSecure(!secure)}
+          {/* Form Card - Consistent with Verify/Add screens */}
+          <View style={styles.formContainer}>
+            <TextInput
+              label="Email Address"
+              value={email}
+              mode="outlined"
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              style={styles.input}
+              outlineStyle={styles.outline}
+              activeOutlineColor="#0A9D8E"
+              placeholder="admin@inspection.com"
             />
-          }
-        />
 
-        <TouchableOpacity style={styles.forgot}>
-          <Text style={styles.forgotText}>Forgot Password?</Text>
-        </TouchableOpacity>
+            <TextInput
+              label="Password"
+              value={password}
+              mode="outlined"
+              secureTextEntry={secure}
+              onChangeText={setPassword}
+              style={styles.input}
+              outlineStyle={styles.outline}
+              activeOutlineColor="#0A9D8E"
+              right={
+                <TextInput.Icon
+                  icon={secure ? "eye-off" : "eye"}
+                  onPress={() => setSecure(!secure)}
+                  color="#999"
+                />
+              }
+            />
 
-        <Button
-          mode="contained"
-          style={styles.button}
-          contentStyle={{ height: 48 }}
-          onPress={handleLogin}
-        >
-          Log In
-        </Button>
-      </View>
+            <TouchableOpacity style={styles.forgot}>
+              <Text style={styles.forgotText}>Forgot Password?</Text>
+            </TouchableOpacity>
 
-      {/* Footer */}
-      <Text style={styles.footerText}>
-        v1.0.2 © 2024 Inspection Corp
-      </Text>
+            <Button
+              mode="contained"
+              style={styles.loginButton}
+              contentStyle={{ height: 50 }}
+              labelStyle={styles.buttonLabel}
+              onPress={handleLogin}
+              elevation={0}
+            >
+              Sign In
+            </Button>
+          </View>
 
-      <TouchableOpacity>
-        <Text style={styles.helpText}>Need Help?</Text>
-      </TouchableOpacity>
-    </KeyboardAvoidingView>
+          {/* Footer - Professional & Clean */}
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>v1.0.2 © 2026 Inspection Corp</Text>
+            <View style={styles.helpRow}>
+              <Text style={styles.footerText}>Having trouble? </Text>
+              <TouchableOpacity>
+                <Text style={styles.helpLink}>Contact Support</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
-export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f6f7f8",
-    alignItems: "center",
-    paddingHorizontal: 20,
-    paddingTop: 80,
   },
-  iconWrapper: {
-    width: 72,
-    height: 72,
-    borderRadius: 18,
-    backgroundColor: "#e7f3fa",
+  inner: {
+    flex: 1,
+    paddingHorizontal: 30,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 20,
+  },
+  logoContainer: {
+    position: 'relative',
+    marginBottom: 25,
+  },
+  iconCircle: {
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+    backgroundColor: "#E6F5F4", // Very light teal
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  dotDecoration: {
+    position: 'absolute',
+    bottom: 5,
+    right: 5,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: "#0A9D8E",
+    borderWidth: 3,
+    borderColor: "#FFF",
+  },
+  textSection: {
+    alignItems: "center",
+    marginBottom: 35,
   },
   title: {
-    fontSize: 24,
-    fontWeight: "700",
-    color: "#111618",
+    fontSize: 26,
+    fontWeight: "800",
+    color: "#1A1C1E",
+    marginBottom: 8,
   },
   subtitle: {
     fontSize: 14,
-    color: "#617c89",
-    marginBottom: 30,
+    color: "#666",
+    textAlign: "center",
   },
-  card: {
+  formContainer: {
     width: "100%",
-    backgroundColor: "#fff",
-    borderRadius: 14,
-    padding: 16,
-    elevation: 2,
   },
   input: {
-    marginBottom: 14,
+    marginBottom: 16,
+    backgroundColor: "#FFF",
+  },
+  outline: {
+    borderRadius: 12, // Consistent with your other screens
   },
   forgot: {
     alignItems: "flex-end",
-    marginBottom: 16,
+    marginBottom: 25,
   },
   forgotText: {
-    color: "#1089c6",
-    fontWeight: "600",
+    color: "#0A9D8E",
+    fontWeight: "700",
+    fontSize: 13,
   },
-  button: {
-    borderRadius: 10,
-    backgroundColor: "#1089c6",
+  loginButton: {
+    borderRadius: 12,
+    backgroundColor: "#0A9D8E",
+  },
+  buttonLabel: {
+    fontSize: 16,
+    fontWeight: "bold",
+    letterSpacing: 0.5,
+  },
+  footer: {
+    marginTop: 40,
+    alignItems: "center",
   },
   footerText: {
-    marginTop: 24,
     fontSize: 12,
-    color: "#617c89",
+    color: "#999",
   },
-  helpText: {
-    marginTop: 10,
-    color: "#1089c6",
-    fontWeight: "600",
+  helpRow: {
+    flexDirection: 'row',
+    marginTop: 8,
+  },
+  helpLink: {
+    fontSize: 12,
+    color: "#0A9D8E",
+    fontWeight: "700",
   },
 });
+
+export default LoginScreen;

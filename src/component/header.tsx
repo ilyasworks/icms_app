@@ -7,12 +7,14 @@ import {
 } from "react-native";
 import { Text } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 interface AppHeaderProps {
   title: string;
   subtitle?: string;
   showNotification?: boolean;
   onNotificationPress?: () => void;
+  showBack?: boolean; // ✅ NEW
 }
 
 const AppHeader: React.FC<AppHeaderProps> = ({
@@ -20,10 +22,27 @@ const AppHeader: React.FC<AppHeaderProps> = ({
   subtitle,
   showNotification = true,
   onNotificationPress,
+  showBack = false,
 }) => {
+  const navigation = useNavigation<any>();
+
   return (
     <View style={styles.header}>
       <View style={styles.profileRow}>
+        {/* BACK BUTTON */}
+        {showBack && (
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.backButton}
+          >
+            <MaterialCommunityIcons
+              name="arrow-left"
+              size={24}
+              color="#111618"
+            />
+          </TouchableOpacity>
+        )}
+
         <Image
           source={{ uri: "https://i.pravatar.cc/100" }}
           style={styles.avatar}
@@ -51,16 +70,16 @@ const AppHeader: React.FC<AppHeaderProps> = ({
     </View>
   );
 };
-
 export default AppHeader;
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "#ffffffff",
     paddingHorizontal: 16,
     paddingVertical: 14,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    paddingTop: 40,
     elevation: 2,
   },
 
@@ -106,4 +125,8 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: "#ef4444",
   },
+  backButton: {
+  marginRight: 6,
+}
+
 });

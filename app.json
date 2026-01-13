@@ -4,7 +4,6 @@
     "slug": "icms",
     "version": "1.0.0",
     "orientation": "portrait",
-    // "icon": "./src/assets/app-icon.png",
     "icon": "./src/assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
@@ -21,10 +20,19 @@
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": false
+      "edgeToEdgeEnabled": false,
+      "package": "com.elyasali.icms"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "3ba397cc-8ecc-4beb-8b3e-c3feb53df129"
+      }
+    },
+    "plugins": [
+      // "@react-native-community/datetimepicker"
+    ]
   }
 }
