@@ -7,6 +7,7 @@ import FirScreen from "../tab/firScreen";
 import EquipmentScreen from "../tab/equipmentScreen";
 import ChecklistScreen from "../tab/checkList";
 import UserProfileScreen from "../screens/UserManagment/UserManagement";
+import VerifyScreen from "../screens/Verify/verify";
 
 const Tab = createBottomTabNavigator();
 
@@ -30,6 +31,9 @@ export default function BottomTabNavigator() {
             case "Profile":
               iconName = "person-outline"; // Updated Icon
               break;
+            case "Verify":
+              iconName = "checkmark-done"; // Updated Icon
+              break;
             default:
               iconName = "ellipse-outline";
           }
@@ -40,6 +44,7 @@ export default function BottomTabNavigator() {
     >
       <Tab.Screen name="Dashboard" component={DashboardScreen} />
       <Tab.Screen name="FIR" component={FirScreen} />
+      <Tab.Screen name="Verify" component={VerifyScreen} />
       <Tab.Screen name="Profile" component={UserProfileScreen} />
     </Tab.Navigator>
   );
