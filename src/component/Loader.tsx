@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { View, Text, StyleSheet, Animated, Easing, Modal } from "react-native";
-import { COLORS } from "../colors";
+import { COLORS } from "../../theme/colors";
 
 interface LoaderProps {
   visible: boolean;
