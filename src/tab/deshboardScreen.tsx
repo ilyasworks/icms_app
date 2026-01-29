@@ -17,7 +17,8 @@ const quickActions = [
   { icon: "file-certificate-outline", label: "Certificates", screen: "Certificates" },
   { icon: "format-list-checks", label: "Checklist", screen: "Checklist" },
   { icon: "shield-search", label: "Verify", screen: "Verify" },
-  { icon: "qrcode-scan", label: "FIR Scan", screen: "FIR" }
+  { icon: "qrcode-scan", label: "FIR Scan", screen: "FIR" },
+  { icon: "file-certificate-outline", label: "Generated Certificate", screen: "GeneratedCertificate" }
 ];
 
 const activities = [

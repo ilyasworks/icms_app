@@ -10,6 +10,8 @@ import {
 import { Text, TextInput, Button } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { useLogin } from "../../Services/AuthService";
+import { storage } from "../../Store/Storage";
 
 const LoginScreen: React.FC = () => {
   const navigation = useNavigation<any>();
@@ -18,9 +20,24 @@ const LoginScreen: React.FC = () => {
   const [password, setPassword] = useState("");
   const [secure, setSecure] = useState(true);
 
-  const handleLogin = () => {
-    // Navigate to the main application
-    navigation.replace("Main-tab"); 
+  const { mutate: loginUser, isPending } = useLogin();
+
+  const handleLogin = async () => {
+    await loginUser(
+      { email, password },
+      {
+        onSuccess: async (res: any) => {
+          console.log("Login Success:", res?.data);
+          await storage.set("token", res?.data?.accessToken);
+          await storage.set("user", res?.data?.user);
+          navigation.replace("Main-tab");
+        },
+        onError: (err: any) => {
+          alert("Invalid credentials!");
+          console.log("Login Error:", err);
+        },
+      }
+    );
   };
 
   return (
@@ -30,8 +47,6 @@ const LoginScreen: React.FC = () => {
         style={styles.container}
       >
         <View style={styles.inner}>
-          
-          {/* Amazing Icon Design */}
           <View style={styles.logoContainer}>
             <View style={styles.iconCircle}>
               <MaterialCommunityIcons
@@ -43,7 +58,6 @@ const LoginScreen: React.FC = () => {
             <View style={styles.dotDecoration} />
           </View>
 
-          {/* Title Section */}
           <View style={styles.textSection}>
             <Text style={styles.title}>Welcome to ICMS</Text>
             <Text style={styles.subtitle}>
@@ -51,7 +65,6 @@ const LoginScreen: React.FC = () => {
             </Text>
           </View>
 
-          {/* Form Card - Consistent with Verify/Add screens */}
           <View style={styles.formContainer}>
             <TextInput
               label="Email Address"
@@ -94,13 +107,14 @@ const LoginScreen: React.FC = () => {
               contentStyle={{ height: 50 }}
               labelStyle={styles.buttonLabel}
               onPress={handleLogin}
+              loading={isPending}
+              disabled={isPending}
               elevation={0}
             >
               Sign In
             </Button>
           </View>
 
-          {/* Footer - Professional & Clean */}
           <View style={styles.footer}>
             <Text style={styles.footerText}>v1.0.2 © 2026 Inspection Corp</Text>
             <View style={styles.helpRow}>
@@ -115,6 +129,7 @@ const LoginScreen: React.FC = () => {
     </SafeAreaView>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {

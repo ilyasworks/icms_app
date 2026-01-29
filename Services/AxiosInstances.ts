@@ -5,7 +5,7 @@ import { storage } from "../Store/Storage";
 // const BASE_URL = 'https://unvarying-sidney-unethically.ngrok-free.dev/api/';
 // const BASE_URL = 'https://unvarying-sidney-unethically.ngrok-free.dev/CashFlow-backend/public/api';
 export const BASE_URL = "https://crbackend.cashflowies.com/public/api";
-export const IMAGE_URL = "https://backend.cashflowies.com/public/uploads/";
+export const IMAGE_URL = "https://crbackend.cashflowies.com/public/";
 
 // ✅ Create Axios instance
 const axiosInstance = axios.create({

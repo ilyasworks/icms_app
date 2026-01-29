@@ -19,6 +19,11 @@ const VerifyScreen = () => {
     { id: 'CR-9999-999', label: 'Invalid certificate' },
   ];
 
+  const handleValidate = () => {
+    console.log("Validating Certificate:", certificateNumber);
+    // Add your validation logic here
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#FFF' }}>
       <AppHeader
@@ -45,25 +50,18 @@ const VerifyScreen = () => {
               value={certificateNumber}
               onChangeText={setCertificateNumber}
             />
-            <TouchableOpacity style={styles.searchIconButton}>
+            {/* <TouchableOpacity style={styles.searchIconButton} onPress={handleValidate}>
               <Ionicons name={'search'} size={22} color={'white'} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
+          
         </View>
-
-        <View style={styles.dividerRow}>
-          <View style={styles.line} />
-          <Text style={styles.orText}>OR</Text>
-          <View style={styles.line} />
-        </View>
-
-        {/* QR Scan Button - Brand Color */}
-        <TouchableOpacity style={styles.qrButton}>
-          <MaterialCommunityIcons name={'qrcode-scan'} size={22} color={'white'} style={{ marginRight: 12 }} />
-          <Text style={styles.qrButtonText}>Scan QR Code</Text>
+        {/* Updated Validate Button */}
+        <TouchableOpacity style={styles.validateButton} onPress={handleValidate}>
+          <Ionicons name={'search'} size={22} color={'white'}  style={{ marginRight: 12 }} />
+          <Text style={styles.validateButtonText}>Validate</Text>
         </TouchableOpacity>
-
-        {/* Examples Section - Consistent with "Badges" style */}
+        {/* Examples Section */}
         <View style={styles.examplesBox}>
           <Text style={styles.examplesTitle}>Try these examples:</Text>
           {examples.map((item, index) => (
@@ -78,6 +76,11 @@ const VerifyScreen = () => {
             </TouchableOpacity>
           ))}
         </View>
+
+        {/* Spacer to push button down */}
+        <View style={{ flex: 1 }} />
+
+
       </View>
     </SafeAreaView>
   );
@@ -87,6 +90,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
+    paddingBottom: 20,
   },
   headerBar: {
     paddingVertical: 15,
@@ -99,6 +103,7 @@ const styles = StyleSheet.create({
   },
   inputCard: {
     paddingVertical: 10,
+    marginBottom: 20,
   },
   inputLabel: {
     fontSize: 14,
@@ -122,49 +127,14 @@ const styles = StyleSheet.create({
   searchIconButton: {
     width: 50,
     height: 48,
-    backgroundColor: '#0A9D8E', // Matches Add New button
+    backgroundColor: '#0A9D8E',
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 10,
   },
-  dividerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 30,
-  },
-  line: {
-    flex: 1,
-    height: 1,
-    backgroundColor: '#EEE',
-  },
-  orText: {
-    marginHorizontal: 15,
-    color: '#999',
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  qrButton: {
-    flexDirection: 'row',
-    backgroundColor: '#1A1C1E', // Dark style for high contrast secondary action
-    height: 52,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 40,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-  },
-  qrButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: '700',
-  },
   examplesBox: {
-    backgroundColor: '#F8F9FA', // Soft grey like your date/ID badges
+    backgroundColor: '#F8F9FA',
     borderRadius: 12,
     padding: 20,
     borderWidth: 1,
@@ -190,6 +160,24 @@ const styles = StyleSheet.create({
   exampleLabel: {
     color: '#777',
     fontSize: 14,
+  },
+  validateButton: {
+    flexDirection: 'row',
+    backgroundColor: '#0A9D8E', // Changed to brand color for primary action
+    height: 52,
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+  },
+  validateButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '700',
   },
 });
 

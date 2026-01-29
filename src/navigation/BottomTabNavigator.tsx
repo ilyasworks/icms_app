@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 
 import DashboardScreen from "../tab/deshboardScreen";
-import FirScreen from "../tab/firScreen";
+import FirScreen from "../screens/FIR/firScreen";
 import EquipmentScreen from "../tab/equipmentScreen";
 import ChecklistScreen from "../tab/checkList";
 import UserProfileScreen from "../screens/UserManagment/UserManagement";
